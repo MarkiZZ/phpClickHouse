@@ -113,7 +113,7 @@ class Request
         $this->options = array(
             CURLOPT_SSL_VERIFYHOST => 0,
             CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_TIMEOUT => 10,
+            CURLOPT_TIMEOUT => 60,
             CURLOPT_CONNECTTIMEOUT => 5,    // Количество секунд ожидания при попытке соединения
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_MAXREDIRS => 10,
@@ -688,7 +688,11 @@ class Request
             $curl_opt[CURLOPT_FILE] = $this->resultFileHandle;
             $curl_opt[CURLOPT_HEADER] = false;
         }
-        curl_setopt_array($this->handle, $curl_opt);
+
+        foreach ($curl_opt as $opt => $value) {
+            curl_setopt($this->handle, $opt, $value);
+        }
+
         return true;
     }
 }
