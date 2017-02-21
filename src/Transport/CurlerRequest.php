@@ -454,21 +454,14 @@ class Request
      */
     public function timeOut($seconds = 10)
     {
-        return $this->timeOutMs($seconds * 1000);
-    }
+        if (defined('CURLOPT_TIMEOUT_MS')) {
+            $this->options[CURLOPT_TIMEOUT_MS] = $seconds * 1000;
+        } else {
+            $this->options[CURLOPT_TIMEOUT] = $seconds;
+        }
 
-    /**
-     * Максимально позволенное количество миллисекунд для выполнения cURL-функций.
-     *
-     * @param int $ms
-     * @return $this
-     */
-    protected function timeOutMs($ms = 10)
-    {
-        $this->options[CURLOPT_TIMEOUT_MS] = $ms;
         return $this;
     }
-
 
     /**
      * @param $data
